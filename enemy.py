@@ -6,6 +6,7 @@ class Enemy(pg.sprite.Sprite):
         self.waypoint = waypoints
         self.position = Vector2(self.waypoint[0])
         self.target_waypoint = 1
+        self.speed = 2
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.center = self.position
@@ -18,4 +19,7 @@ class Enemy(pg.sprite.Sprite):
         #create a position waypoint to head to.
         self.target = Vector2(self.waypoint[self.target_waypoint])
         self.movement = self.target - self.position
-        print(self.movement)
+        #here we are using the normalize method in the Sprite class to convert our position in
+        # the x direction and y direction to get our direction in pixels using trig
+        self.position += self.movement.normalize() * self.speed
+        self.rect.center = self.position
