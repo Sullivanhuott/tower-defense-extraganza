@@ -19,7 +19,16 @@ class Enemy(pg.sprite.Sprite):
         #create a position waypoint to head to.
         self.target = Vector2(self.waypoint[self.target_waypoint])
         self.movement = self.target - self.position
-        #here we are using the normalize method in the Sprite class to convert our position in
-        # the x direction and y direction to get our direction in pixels using trig
-        self.position += self.movement.normalize() * self.speed
+
+        #Calculate dis
+        distance = self.movement.length()
+        #check if remaining distance is greater than enemy speed
+        if distance >= self.speed:
+            #here we are using the normalize method in the Sprite class to convert our position in
+            # the x direction and y direction to get our direction in pixels using trig
+            self.position += self.movement.normalize() * self.speed
+        else:
+            if distance != 0:
+                self.position += self.movement.normalize() * distance
+            self.target_waypoint += 1
         self.rect.center = self.position
