@@ -18,8 +18,14 @@ ghost_image = pg.image.load('assets/dungeon/Tiles/ghost.png').convert_alpha()
 #create ghost group
 enemy_group = pg.sprite.Group()
 
+waypoints = [
+    (100,100),
+    (400,200),
+    (400,100),
+    (200,300)
+]
 
-ghost = Enemy((200,300), ghost_image)
+ghost = Enemy(waypoints, ghost_image)
 enemy_group.add(ghost)
 
 print(ghost)
@@ -35,6 +41,9 @@ while run:
 
     #clear screen between each loop
     screen.fill("grey100")
+
+    #illustrate enemy path
+    pg.draw.lines(screen, "grey0", False, waypoints)
 
     #update groups
     enemy_group.update()

@@ -1,15 +1,21 @@
 import pygame as pg
-
+from pygame.math import Vector2
 class Enemy(pg.sprite.Sprite):
-    def __init__(self, position, image):
+    def __init__(self, waypoints, image):
         pg.sprite.Sprite.__init__(self)
+        self.waypoint = waypoints
+        self.position = Vector2(self.waypoint[0])
+        self.target_waypoint = 1
         self.image = image
         self.rect = self.image.get_rect()
-        self.rect.center = position
+        self.rect.center = self.position
 
     def update(self):
         self.move()
 
     #create movement method
     def move(self):
-        self.rect.x += 1
+        #create a position waypoint to head to.
+        self.target = Vector2(self.waypoint[self.target_waypoint])
+        self.movement = self.target - self.position
+        print(self.movement)
