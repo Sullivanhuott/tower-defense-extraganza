@@ -11,7 +11,11 @@ clock = pg.time.Clock()
 
 # create screen dimensions and screen name
 screen = pg.display.set_mode((c.SCREEN_WIDTH, c.SCREEN_HEIGHT))
-pg.display.set_caption("defence of Huottalonia")
+pg.display.set_caption("Defence of Huottalonia")
+
+#loading in the map image I created
+Huottalonia_image = pg.image.load('assets/huottalonia_gate_map.png').convert_alpha()
+
 
 #Enemy images
 ghost_image = pg.image.load('assets/dungeon/Tiles/ghost.png').convert_alpha()
