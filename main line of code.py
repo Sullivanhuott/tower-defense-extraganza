@@ -1,6 +1,7 @@
 import pygame as pg
 from enemy import Enemy
 import constants as c
+import math
 
 # initializing
 pg.init()

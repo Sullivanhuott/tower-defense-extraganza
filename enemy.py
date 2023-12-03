@@ -17,8 +17,12 @@ class Enemy(pg.sprite.Sprite):
     #create movement method
     def move(self):
         #create a position waypoint to head to.
-        self.target = Vector2(self.waypoint[self.target_waypoint])
-        self.movement = self.target - self.position
+        if self.target_waypoint < len(self.waypoint):
+            self.target = Vector2(self.waypoint[self.target_waypoint])
+            self.movement = self.target - self.position
+        else:
+            #enemy has finished the track
+            self.kill()
 
         #Calculate dis
         distance = self.movement.length()
