@@ -1,5 +1,6 @@
 import pygame as pg
 from enemy import Enemy
+from levels import Level
 import constants as c
 import math
 
@@ -16,10 +17,11 @@ pg.display.set_caption("Defence of Huottalonia")
 #loading in the map image I created
 Huottalonia_image = pg.image.load('assets/huottalonia_gate_map.png').convert_alpha()
 
-
 #Enemy images
 ghost_image = pg.image.load('assets/dungeon/Tiles/ghost.png').convert_alpha()
 
+#create level
+Huottalonia = Level(Huottalonia_image)
 #create ghost group
 enemy_group = pg.sprite.Group()
 
@@ -46,6 +48,9 @@ while run:
 
     #clear screen between each loop
     screen.fill("grey100")
+
+    #draw level
+    Huottalonia.draw(screen)
 
     #illustrate enemy path
     pg.draw.lines(screen, "grey0", False, waypoints)
