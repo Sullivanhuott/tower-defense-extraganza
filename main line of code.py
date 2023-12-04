@@ -3,6 +3,7 @@ from enemy import Enemy
 from allies import Ally
 from levels import Level
 import constants as c
+from PIL import Image
 import math
 
 # initializing
@@ -12,7 +13,7 @@ pg.init()
 clock = pg.time.Clock()
 
 # create screen dimensions and screen name
-screen = pg.display.set_mode((c.SCREEN_WIDTH, c.SCREEN_HEIGHT))
+screen = pg.display.set_mode((c.SCREEN_WIDTH + c.SIDE_PANEL, c.SCREEN_HEIGHT))
 pg.display.set_caption("Defence of Huottalonia")
 
 #loading in the map image I created
@@ -24,9 +25,19 @@ grunt_image = pg.image.load('assets/dungeon/Tiles/grunt.png').convert_alpha()
 #Enemy images
 ghost_image = pg.image.load('assets/dungeon/Tiles/ghost.png').convert_alpha()
 
+#buttons
+org_grunt_image = Image.open("assets/dungeon/Tiles/grunt.png")
+scale_factor = .5
+new_width = int(org_grunt_image.width * scale_factor)
+new_height = int(org_grunt_image.height * scale_factor)
+scaled_grunt_image = org_grunt_image.resize((new_width, new_height))
+scaled_grunt_image.save("assets/dungeon/Tiles/scaledgrunt.png")
+buy_ally_image = pg.image.load("assets/dungeon/Tiles/scaledgrunt.png").convert_alpha()
+
 def create_ally(mouse_position):
     mouse_tile_x = mouse_position[0] // c.TILE_SIZE
     mouse_tile_y = mouse_position[1] // c.TILE_SIZE
+
     Grunt = Ally(grunt_image, mouse_tile_x, mouse_tile_y)
     ally_group.add(Grunt)
 
