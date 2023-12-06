@@ -15,6 +15,13 @@ new_height = int(org_sword_image.height * scale_factor)
 scaled_grunt_image = org_sword_image.resize((new_width, new_height))
 scaled_grunt_image.save("assets/bettercrossedswords_new.png")
 
+org_anvil_image = Image.open("assets/dungeon/Tiles/anvil.png")
+scale_factor = 3
+new_width = int(org_anvil_image.width * scale_factor)
+new_height = int(org_anvil_image.height * scale_factor)
+scaled_grunt_image = org_anvil_image.resize((new_width, new_height))
+scaled_grunt_image.save("assets/dungeon/Tiles/scaledanvil.png")
+
 class Button():
     def __init__(self, x, y, image, single_click):
         self.image = image

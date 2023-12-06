@@ -15,6 +15,7 @@ clock = pg.time.Clock()
 
 #game variables
 placing_ally = False
+selected_ally = None
 
 # create screen dimensions and screen name
 screen = pg.display.set_mode((c.SCREEN_WIDTH + c.SIDE_PANEL, c.SCREEN_HEIGHT))
@@ -24,7 +25,8 @@ pg.display.set_caption("Defence of Huottalonia")
 Huottalonia_image = pg.image.load('assets/huottalonia_gate_map.png').convert_alpha()
 
 #Ally images
-grunt_image = pg.image.load('assets/dungeon/Tiles/grunt.png').convert_alpha()
+for x in range (1, c.ALLY_LEVELS + 1):
+    grunt_image = pg.image.load(f'assets/dungeon/Tiles/grunt_{c.ALLY_DATA}.png').convert_alpha()
 
 #Enemy images
 ghost_image = pg.image.load('assets/dungeon/Tiles/ghost.png').convert_alpha()
@@ -32,8 +34,10 @@ ghost_image = pg.image.load('assets/dungeon/Tiles/ghost.png').convert_alpha()
 #buttons
 buy_ally_image = pg.image.load("assets/dungeon/Tiles/scaledgrunt.png").convert_alpha()
 cancel_ally_image = pg.image.load("assets/bettercrossedswords_new.png").convert_alpha()
+upgrade_image = pg.image.load("assets/dungeon/Tiles/scaledanvil.png").convert_alpha()
 ally_button = Button(c.SCREEN_WIDTH + 75, 60, buy_ally_image, True)
-cancel_button = Button(c.SCREEN_WIDTH+ 200, 60, cancel_ally_image, True)
+cancel_button = Button(c.SCREEN_WIDTH + 200, 60, cancel_ally_image, True)
+upgrade_button = Button(c.SCREEN_WIDTH + 75, 120, upgrade_image, True)
 
 
 #finding the color of my tower
@@ -55,10 +59,21 @@ def create_ally(mouse_position):
             if (mouse_tile_x,mouse_tile_y) == (Grunt.tile_x, Grunt.tile_y):
                 freespace = False
         if freespace == True:
-            new_Grunt = Ally(grunt_image, mouse_tile_x, mouse_tile_y)
-            ally_group.add(new_Grunt)
+            Grunt = Ally(grunt_image, mouse_tile_x, mouse_tile_y)
+            ally_group.add(Grunt)
     else:
         pass
+def select_ally(mouse_position):
+    mouse_tile_x = mouse_position[0] // c.TILE_SIZE
+    mouse_tile_y = mouse_position[1] // c.TILE_SIZE
+    for Grunt in ally_group:
+        if (mouse_tile_x, mouse_tile_y) == (Grunt.tile_x, Grunt.tile_y):
+            return Grunt
+
+def clear_selection():
+    for ally in ally_group:
+        ally.selected = False
+
 
 #create level
 Huottalonia = Level(Huottalonia_image)
@@ -83,6 +98,7 @@ print(ghost)
 
 #title game loop
 #####################################################################################################################
+#####################################################################################################################
 #main game loop
 run = True
 while run:
@@ -92,6 +108,11 @@ while run:
     #UPDATING SECTIONS
     ###################
     enemy_group.update()
+    ally_group.update(enemy_group)
+
+    #highlight selected ally
+    if selected_ally:
+        selected_ally.selected = True
 
     ###################
     #drawing section
@@ -105,7 +126,8 @@ while run:
 
     #drawing part of loop
     enemy_group.draw(screen)
-    ally_group.draw(screen)
+    for allies in ally_group:
+        allies.draw(screen)
 
     #drawing buttons
     if ally_button.draw(screen):
@@ -120,6 +142,12 @@ while run:
             screen.blit(grunt_image, cursor_rect)
         if cancel_button.draw(screen):
             placing_ally = False
+    # if an ally is selected then show the upgrade button
+    if selected_ally:
+        if selected_ally.upgrade_level < c.ALLY_LEVELS:
+            if upgrade_button.draw(screen):
+                selected_ally.upgrade()
+
 
 
     #event_handler
@@ -133,9 +161,14 @@ while run:
             # check if mouse is on the map by limiting the placement to below the x distance of the
             # game width and the map height
             if mouse_position[0] < c.SCREEN_WIDTH and mouse_position[1] < c.SCREEN_HEIGHT:
+                #clear selected allies
+                selected_ally = None
+                clear_selection()
                 #only place allies if you click the button
                 if placing_ally == True:
                     create_ally(mouse_position)
+                else:
+                    selected_ally = select_ally(mouse_position)
 
     #update display
     pg.display.flip()
