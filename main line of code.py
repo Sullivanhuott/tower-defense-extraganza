@@ -25,11 +25,16 @@ pg.display.set_caption("Defence of Huottalonia")
 Huottalonia_image = pg.image.load('assets/huottalonia_gate_map.png').convert_alpha()
 
 #Ally images
-for x in range (1, c.ALLY_LEVELS + 1):
-    grunt_image = pg.image.load(f'assets/dungeon/Tiles/grunt_{c.ALLY_DATA}.png').convert_alpha()
+grunt_image = pg.image.load(f'assets/dungeon/Tiles/grunt_1.png').convert_alpha()
 
 #Enemy images
-ghost_image = pg.image.load('assets/dungeon/Tiles/ghost.png').convert_alpha()
+ghost_images = {
+    "weak": pg.image.load('assets/dungeon/Tiles/ghost_1.png').convert_alpha(),
+    "medium": pg.image.load('assets/dungeon/Tiles/ghost_2.png').convert_alpha(),
+    "strong": pg.image.load('assets/dungeon/Tiles/ghost_3.png').convert_alpha(),
+    "elite": pg.image.load('assets/dungeon/Tiles/ghost_4.png').convert_alpha()
+}
+ghost_image = pg.image.load('assets/dungeon/Tiles/ghost_1.png').convert_alpha()
 
 #buttons
 buy_ally_image = pg.image.load("assets/dungeon/Tiles/scaledgrunt.png").convert_alpha()
@@ -79,6 +84,7 @@ def clear_selection():
 Huottalonia = Level(Huottalonia_image)
 #create enemy group
 enemy_group = pg.sprite.Group()
+enemy = Enemy(enemy_type, waypoints, enemy_images)
 #create ally group
 ally_group = pg.sprite.Group()
 waypoints = [
@@ -144,9 +150,8 @@ while run:
             placing_ally = False
     # if an ally is selected then show the upgrade button
     if selected_ally:
-        if selected_ally.upgrade_level < c.ALLY_LEVELS:
-            if upgrade_button.draw(screen):
-                selected_ally.upgrade()
+        if upgrade_button.draw(screen):
+            selected_ally.upgrade()
 
 
 

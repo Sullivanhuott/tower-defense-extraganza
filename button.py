@@ -1,7 +1,7 @@
 import pygame as pg
 from PIL import Image
 
-org_grunt_image = Image.open("assets/dungeon/Tiles/grunt.png")
+org_grunt_image = Image.open("assets/dungeon/Tiles/grunt_1.png")
 scale_factor = 3
 new_width = int(org_grunt_image.width * scale_factor)
 new_height = int(org_grunt_image.height * scale_factor)
